@@ -8,6 +8,7 @@ const port = 3000;
 const app = express();
 
 const postsRouter = require("./routers/posts");
+const categoriesRouter = require("./routers/category");
 const errorHandler = require("./middleware/errorHandler");
 
 // Registro il middleware per il parsing del body
@@ -17,6 +18,7 @@ const errorHandler = require("./middleware/errorHandler");
 // accessibile tramite req.body
 app.use(express.json());
 
+app.use("/categories", categoriesRouter);
 app.use("/posts", postsRouter);
 
 app.use(RouteNotFound);
