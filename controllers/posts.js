@@ -22,9 +22,21 @@ async function store (req, res, next) {
             slug: slug,
             image: postData.image,
             content: postData.content,
-            published: postData.published
-        }
-    })
+            published: postData.published,
+            category: {
+              create: {
+                name: postData.name
+                }
+            },
+            tags:{
+              connect: postData.tags.map(idTag => ({id : idTag}))
+            }
+          },
+            include: {
+              category: true,
+              tags: true
+            }
+          })
     
     return res.json(newPost);
 }

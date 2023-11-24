@@ -8,6 +8,7 @@ const port = 3000;
 const app = express();
 
 const postsRouter = require("./routers/posts");
+const tagsRouter = require("./routers/tag");
 const categoriesRouter = require("./routers/category");
 const errorHandler = require("./middleware/errorHandler");
 
@@ -18,6 +19,7 @@ const errorHandler = require("./middleware/errorHandler");
 // accessibile tramite req.body
 app.use(express.json());
 
+app.use("/tags", tagsRouter);
 app.use("/categories", categoriesRouter);
 app.use("/posts", postsRouter);
 
