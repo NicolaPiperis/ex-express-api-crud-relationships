@@ -1,9 +1,14 @@
 const express = require ("express");
 const router = express.Router();
+
+const {body} = require('express-validator');
+
 const postsController = require("../controllers/posts");
 
 // POST /posts
-router.post('/', postsController.store);
+router.post('/',
+body("content").isString().notEmpty().isLength({min:10}),
+postsController.store);
 
 // GET /posts
 router.get('/all', postsController.index);

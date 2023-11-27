@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const NotFound = require ("../exceptions/NotFound");
 const ValidationError = require("../exceptions/Validation");
+const { validationResult  } = require('express-validator');
 // libreria per automatizzare lo slug basandosi sul title
 const slugify = require("slugify");
 function generateSlug(title) {
@@ -9,6 +10,12 @@ function generateSlug(title) {
   }
 
 async function store (req, res, next) {
+let validation = validationResult(req)
+if(!validation.isEmpty) {
+  return res.status(422).json(validation.array);
+}
+
+
     const postData = req.body;
 
     if(!postData.title) {
@@ -42,7 +49,12 @@ async function store (req, res, next) {
 }
 
 async function index (req, res) {
-    const data = await prisma.post.findMany();
+    const data = await prisma.post.findMany({
+      include: {
+        category: true,
+        tags: true
+      }
+    });
     res.json(data);
     
 }
